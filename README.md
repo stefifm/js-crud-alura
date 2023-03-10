@@ -1,5 +1,15 @@
-```js
-json-server --watch db.json
-```
+# CRUD con JavaScript - Curso de Alura LATAM
 
-Browser sync: browser-sync start --server --file . --host --port 5000 --startPath screens/lista_cliente.html
+Trabajamos en el proyecto PetShop pero desde el lado del administrador. Aquí agregamos, obtenemos. editamos y borramos clientes.
+
+## Lo que vimos
+
+- CRUD con JavaScript
+- JSON Server
+- Async - Await
+- Promesas
+- Try - Catch
+- Fetch API
+- Refactorización de responsabilidades
+- Creando Tamplates con JavaScript
+- Continuando con manipulando el DOM
