@@ -27,20 +27,29 @@ const createNewLine = (name, email, id) => {
   line.innerHTML = content
 
   const btn = line.querySelector('button')
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', async () => {
     const id = btn.id
-    clientService.deleteClient(id).then(res => {
-      console.log(res)
-    }).catch(error => console.log(error))
+    try {
+      await clientService.deleteClient(id)
+    } catch (error) {
+      window.location.href = '../screens/error.html'
+    }
   })
   return line
 }
 
 const table = document.querySelector('[data-table]')
 
-clientService.clientList().then(data => {
-  data.forEach(({ nombre, email, id }) => {
-    const newLine = createNewLine(nombre, email, id)
-    table.appendChild(newLine)
-  })
-}).catch(error => window.alert(`Ocurrió un error ${error}`))
+const render = async () => {
+  try {
+    const clientList = await clientService.clientList()
+    clientList.forEach(data => {
+      const newLine = createNewLine(data.nombre, data.email, data.id)
+      table.appendChild(newLine)
+    })
+  } catch (error) {
+    window.location.href = '../screens/error.html'
+  }
+}
+
+render()

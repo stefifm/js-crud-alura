@@ -2,7 +2,7 @@ import { clientService } from '../service/client-service.js'
 
 const form = document.querySelector('[data-form]')
 
-const getInformation = () => {
+const getInformation = async () => {
   const url = new URL(window.location)
   const id = url.searchParams.get('id')
 
@@ -11,22 +11,34 @@ const getInformation = () => {
   const nombre = document.querySelector('[data-nombre]')
   const email = document.querySelector('[data-email]')
 
-  clientService.detailClient(id)
-    .then(perfil => {
-      nombre.value = perfil.nombre
-      email.value = perfil.email
-    })
+  try {
+    const profile = await clientService.detailClient(id)
+
+    if (profile.nombre && profile.email) {
+      nombre.value = profile.nombre
+      email.value = profile.email
+    } else {
+      throw new Error()
+    }
+  } catch (error) {
+    window.location.href = '../screens/error.html'
+  }
 }
 
 getInformation()
 
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
   e.preventDefault()
   const nombre = document.querySelector('[data-nombre]').value
   const email = document.querySelector('[data-email]').value
 
   const url = new URL(window.location)
   const id = url.searchParams.get('id')
-  clientService.updateClient(nombre, email, id)
-    .then(() => (window.location.href = '../screens/edicion_concluida.html'))
+
+  try {
+    await clientService.updateClient(nombre, email, id)
+    window.location.href = '../screens/edicion_concluida.html'
+  } catch (error) {
+    window.location.href = '../screens/error.html'
+  }
 })
